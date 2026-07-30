@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func calc() {
+func Calc() {
 	var operation string
 	var number1, number2 float64
 
@@ -37,4 +37,22 @@ func calc() {
 		fmt.Println("Error: Invalid operation. Please choose from add, subtract, multiply, or divide.")
 	}
 	// The %.2f is a format verb for printing floating-point numbers with exactly 2 digits after the decimal point.
+
+	var num1, num2 float64
+	opt := "+"
+	switch opt {
+	case "+":
+		res := num1 + num2
+		fmt.Println(res)
+	case "-":
+		res := num1 - num2
+		fmt.Println(res)
+	case "/":
+		if num2 == 0 {
+			fmt.Println("division by zero. invalid")
+		} else {
+			res := num1 / num2
+			fmt.Println(res)
+		}
+	}
 }
