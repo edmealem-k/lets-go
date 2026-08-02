@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/rs/zerolog/log"
+
+	"example/custom"
+)
 
 func main() {
 	fmt.Println("Hello main")
@@ -221,11 +227,84 @@ func main() {
 	// 				-> I am finished
 	//
 	// As we can see, defer statements are stacked and executed in a LIFO manner.
-	// so defer is incredibly useful and is commmonly used foor doing cleanup or error handling.
+	// so defer is incredibly useful and is commmonly used for doing cleanup or error handling.
+	//
+	//
+	//
+	//
+
+	//
+	//
+	// Modules
+	//
+	// a module is a collection of Go packages stored in a file tree with a
+	// go.mod file at its root, provided the directory is outside $GOPATH/src
+	//
+	// GOPATH is a variable that defines the root of your workspace and it contains
+	// the following folders:
+	// 		src: contains Go source code organized in a hierarchy.
+	// 		pkg: contains compiled package code.
+	// 		bin: contains compiled binaries and executables
+	//
+	//
+	// create a new module using go mod init command which creates a new module
+	// and initializes the go.mod file that describes it.
+	// 		go mod init example
+	//
+	// if you want to add a new dependency, we will use go get command
+	// 		go get github.com/rs/zerolog
+	//
+	// as we can see a go.sum file was also created. this file contains the expected
+	// hashes of the content of the new modules.
+	//
+	// we can list all the dependencies using go list command as follows:
+	// 		go list -m all
+	//
+	// If the dependency is not used, we can simply remove it using
+	// 		go mod tidy # command
+	//
+
 	//
 	//
 	//
 	//
 	//
+	//Packages
+	//
+	// A package is nothing but a directory containg one or more Go source
+	// files, or other Go packages.
+	// This meaning every Go source file must belong to a package and
+	// package declaration is done at top of every source file as follows
+	// 		package <<package_name>>
+	//
+	// so far we have done everything inside of package main. By convention,
+	// executable programs (by that I mean the ones with the main package)
+	// are called commands, others are simply called packages.
+	//
+	// The main package should also contain a main() function which is a special
+	// function that acts as the entry point of an executable program.
+	//
+	// imports and exports
+	// Basically, any value (like a variable or function) can be exported and visible
+	// from other packages if they have been defined with an upper case identifier.
+	// values declared on code.go file
+	fmt.Println(custom.Value)
+
+	//
+	//
+	//
+	//
+	//
+	//
+	// External dependencies
+	// In Go, we are not only limited to working with local packages,
+	// we can also install external packages using go install command
+	//
+	log.Print(custom.Value)
+
+	//
+	//
+	//
+	// Workspaces
 	//
 }
