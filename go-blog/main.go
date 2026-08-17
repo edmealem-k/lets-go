@@ -8,6 +8,19 @@ import (
 	"example/custom"
 )
 
+type Car struct {
+	Name string
+	Year int
+}
+
+func (c Car) IsLatest() bool {
+	return c.Year >= 2021
+}
+
+func (c *Car) UpdateName(name string) {
+	c.Name = name
+}
+
 func main() {
 	fmt.Println("Hello main")
 
@@ -512,4 +525,115 @@ func main() {
 	}
 	// You will often find tags in encoding packages, such as XML, JSON,
 	// YAML, ORMs and Configuration management.
+
+	//
+	//
+	//
+	//
+	// Properties of Structs
+	//
+	// Structs are value types. when we assign one struct variable to another,
+	// a new copy of the struct is created and assigned
+	//
+	// An Empty struct occupies zero bytes of storage.
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Methods - function receivers
+	// Techinacally, Go is not an object-oriented programming language. it doesn't
+	// have classes, objects, and inheritance. However, Go has types. and, you can
+	// define methods on types.
+	// func (variable T) Name(params) (returnTypes) {}
+	// type Car struct {
+	// 	Name string
+	// 	Year int
+	// }
+	// func (c Car) IsLatest() bool {
+	// 	return c.Year >= 2021
+	// }
+	newCar := Car{Name: "BMW", Year: 2024}
+	fmt.Println(newCar.IsLatest())
+
+	//
+	//
+	// Methode with Pointer receivers
+	// the example above was a value receiver. meaning the method operates on a copy
+	// of the value passed to it. Therfore, any modifications done to the
+	// receiver inside the methods are not visible to the caller
+	//
+	//	func (c *Car) UpdateName(name string) {
+	//		c.Name = name
+	//	}
+	//
+	// Why methods instead of functions?
+	// as always, there's no particular answer for this. and in no way one is better than the
+	// other. Instead, they should be used appropriately when the situation arrives.
+	// one thing i can think of right now is that methods can help us avoid naming
+	// conflicts. since a method is tied to a particular type, we can have the same
+	// method names for multiple receivers
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Arrays and Slices
+	// an array is a fixed-size collection of elements of the same type.
+	// we can declare an array as follows
+	// var a [n]T => n - length and T - type like int, string, bool etc
+	// var cars [3]string
+	// we can initialize an array using an array literal
+	// var a [n]T = [n]T{v1, v2, ... vn}
+	// var cars [3]string = [3]string{"BMW", "Toyota", "Honda"}
+	//
+	//
+	// Iteration
+	// There are multiple ways to iterate over arrays
+	// 1st one is using the for loop with the len function
+	arr := [4]int{1, 2, 3, 4}
+	for i := 0; i < len(arr); i++ {
+		fmt.Println(arr[i])
+	}
+	// 2nd way is to use the range keyword with the for loop
+	for i, val := range arr {
+		fmt.Printf("Index: %d, Value: %d\n", i, val)
+	}
+
+	// As we can see, our example works the same as before.
+	// But the range keyword is quite versatile and can be used in multiple ways.
+	for i, val := range arr {
+		fmt.Println(i, val) // Normal usage of range
+	}
+	for _, val := range arr {
+		fmt.Println(val) // Omit the index with _ and use the value only
+	}
+	for i := range arr {
+		fmt.Println(i) // use index only
+	}
+	for range arr {
+	} // Simply loop over the array
+	// Properties of arrays
+	// The array's length is part of its type. So, the array a and b are completely
+	// distinct types, and we cann't assign one to the other.
+	// var a = [4]int{1,2,3,4}
+	// var b = [2]int = a // error
+	//
+	//
+	// Arrays in Go are value types unlike other languages like C, C++, and Java
+	// where arrays are reference types.
+	// This means that when we assign an array to a new variable or pass an array
+	// to a function, the entire array is copied.
 }
