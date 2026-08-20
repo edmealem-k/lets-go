@@ -612,6 +612,9 @@ func main() {
 		fmt.Printf("Index: %d, Value: %d\n", i, val)
 	}
 
+	//
+	//
+	//
 	// As we can see, our example works the same as before.
 	// But the range keyword is quite versatile and can be used in multiple ways.
 	for i, val := range arr {
@@ -625,15 +628,138 @@ func main() {
 	}
 	for range arr {
 	} // Simply loop over the array
+
+	//
+	//
+	//
+	//
+	//
+	//
+	arrmul := [2][4]int{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+	}
+	fmt.Println("Multi dimensional array in go", arrmul)
+	//
+	// We can also let the compiler infer the length of the array by using `...`
+	// ellipses instead of the length
+	arrmulin := [...][4]int{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+	}
+	fmt.Println("Multi dimensional array in go", arrmulin)
+
+	//
+	//
 	// Properties of arrays
 	// The array's length is part of its type. So, the array a and b are completely
 	// distinct types, and we cann't assign one to the other.
 	// var a = [4]int{1,2,3,4}
-	// var b = [2]int = a // error
+	// var b [2]int = a // error
 	//
 	//
 	// Arrays in Go are value types unlike other languages like C, C++, and Java
 	// where arrays are reference types.
 	// This means that when we assign an array to a new variable or pass an array
 	// to a function, the entire array is copied.
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Slices
+	// arrays are useful but a bit inflexible due to the limitation caused by
+	// their fixed size. this brings us to slices,
+	// A Slice is a segment of an array. slices build on arrays and provide more
+	// power, flexibility, and convenience.
+
+	//
+	//
+	// A slice consists of three things:
+	// 		A pointer reference to an underlying array.
+	// 		the length of the segment of the array that the slice contains
+	// 		and, the capacity, which is the max size up to which the segment can grow
+	//
+	// just like `len` function, we can determine the capacity of a slice using
+	// the built-in `cap` function.
+
+	arr2 := [5]int{1, 2, 3, 4, 5}
+	sls1 := arr2[1:4]
+	fmt.Printf("Array: %v, Length: %d, capacity:%d\n", arr2, len(arr2), cap(arr2))
+	// Array: [1 2 3 4 5], Length: 5, capacity:5
+	fmt.Printf("Slice: %v, Length: %d, capacity:%d\n", sls1, len(sls1), cap(sls1))
+	// Slice: [2 3 4], Length: 3, capacity:4
+	//
+	//
+	// Let's see how we can declare a slice => var s []T
+	var s []string
+	fmt.Println("var s []string => ", s)
+	fmt.Println("s == nil", s == nil)
+	// In Go, the zero value of an `array` is a ready-to-use array where all of its
+	// elements are initialized to their respective zero values,
+	// while the zero value of a `slice` is strictly `nil`
+	//
+	//
+	//
+	// Initialization
+	// There are multiple ways to initialize our slice. one way is to use the
+	// built-in `make` function
+	// make([]T, len, cap) or []T
+	ss := make([]string, 0, 0)
+	fmt.Println(ss)
+	sss := make([]string, 0)
+	fmt.Println(sss)
+	ssss := []string{"Go", "TypeScript"}
+	fmt.Println(ssss)
+
+	//
+	//
+	// Iteration
+	// we can iterate over a slice in the same way you iterate over an array, by using the
+	// for loop with either `len` function or `range` keyword
+
+	//
+	//
+	//
+	// Built-in slice functions
+	//
+	// copy
+	// The `copy()` function copies elements from one slice to another.
+	// It takes 2 slices, a destination, and a source. It also returns
+	// the number of elements copied.
+	//
+	// func copy(dst, src []T) int
+	s11 := []int{1, 2, 3, 4, 5}
+	s22 := make([]int, len(s11))
+	e := copy(s22, s11)
+	fmt.Println("Source slice: ", s11)
+	fmt.Println("Destination slice: ", s22)
+	fmt.Println("Copied slice: ", e)
+
+	//
+	//
+	// append
+	// Now, let's look at how we can append data to our slice using the built-in
+	// `append` function which appends new elements at the end of a given slice.
+	//
+	// It takes a slice and a variable number of arguments. It then returns a new
+	// slice containing all the elements.
+	//
+	// func append(slice []T, elems ...T) []T
+
+	ss1 := []int{1, 2, 3, 4, 5}
+	ss2 := append(ss1, 6, 7, 8)
+	fmt.Println("slice ", ss1)
+	fmt.Println("appended slice ", ss2)
+
+	//
+	//
+	//
+	// Properties of slices
+	// slices are reference types, unlike arrays. This means modifying the elements
+	// of a slice will modify the corresponding elements in the referenced array.
 }
