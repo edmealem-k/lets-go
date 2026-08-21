@@ -762,4 +762,100 @@ func main() {
 	// Properties of slices
 	// slices are reference types, unlike arrays. This means modifying the elements
 	// of a slice will modify the corresponding elements in the referenced array.
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Maps
+	// A map is an unordered collection of key-value pairs. It maps keys to values
+	// It is used for fast lookups, retrieval, and deletion of data based on keys,
+	//
+	// Declaration
+	// var m map[K]V =//=// where `K` is the key type and `V` is the value type.
+	var m map[string]int
+	fmt.Println(m == nil) // true
+	// as we can see, the zero value of a map is `nil`.
+	//
+	// A nil map has no keys. Moreover, any attempt to add keys to a nil map will
+	// result in a runtime error.
+	//
+	//
+	// Initialization using either make function or map literal
+	// We can use the built-in `make` function, which allocates memory for referenced
+	// data types and initializes their underlying data structure
+	m1 := make(map[string]int)
+	m1["num1"] = 13
+	m1["num2"] = 16
+	fmt.Println(m1)
+	// or using a map literal.
+	m2 := map[string]int{
+		"a": 0,
+		"b": 1,
+		"c": 2,
+	}
+	fmt.Println(m2)
+
+	// As always, we can use our custom types as well.
+	type User struct {
+		Name string
+		Age  int
+	}
+	m3 := map[string]User{
+		"user-1": {
+			Name: "Ab",
+			Age:  27,
+		},
+		"user-2": {
+			Name: "Sol",
+			Age:  26,
+		},
+	}
+	fmt.Println("Map with custom type value ", m3)
+	// Now, let's see how we can add a value to our map.
+	m3["user-3"] = User{
+		Name: "Steve",
+		Age:  25,
+	}
+
+	// Retrieve a value from a map
+	// When you retrieve the value assigned to a given key, it returns an additional
+	// boolean value as well. The boolean variable will be `true` if the key exists,
+	// and `false` otherwise.
+	User3, exists := m3["user-3"]
+	if exists {
+		fmt.Println(User3)
+	} else {
+		fmt.Println("user with key does not exist on the map")
+	}
+	// Delete
+	// we can use the built-in `delete` function. which accepts the map as the first
+	// argument and the key as the second
+	delete(m3, "user-3")
+	User3, exists = m3["user-3"]
+	if exists {
+		fmt.Println(User3)
+	} else {
+		fmt.Println("user is deleted from the map")
+	}
+	// The `delete()` function doesn't return any value. also, it doesn't do anything
+	// if the key doesn't exist in the map
+	//
+	//
+	//
+	// Iteration
+	// Similar to arrays or slices, we can iterate over maps with the `range` keyword
+	for key, value := range m3 {
+		fmt.Printf("key: %s, Value: %v\n", key, value)
+	}
+	// Note that a map is an unordered collection, and therefore the iteration
+	// order of a map is not guaranteed to be the same every time we iterate over it.
+	//
+	//
+	// Properties
+	// Maps are reference types, which means when we assign a map to a new variable
+	// they both refer to the same underlying data structure
 }
