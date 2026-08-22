@@ -858,4 +858,197 @@ func main() {
 	// Properties
 	// Maps are reference types, which means when we assign a map to a new variable
 	// they both refer to the same underlying data structure
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Interfaces
+	// an interface in Go is an abstract type that is defined using a set of method
+	// signatures. The interface defines the behavior for similar types of objects
+	//
+	// One of the best real-world examples of interfaces is the power socket.
+	// Imagine we need to connect different devices to the power socket
+
+	// type socket struct{}
+	//
+	// type PowerDrawer interface {
+	// 	Draw(power int)
+	// }
+	//
+	// func (socket) Plug(device PowerDrawer, power int) {
+	// 	device.Draw(power)
+	// }
+	//
+	// type mobile struct {
+	// 	brand string
+	// }
+	//
+	// func (m mobile) Draw(power int) {
+	// 	fmt.Printf("%T -> brand: %s, power: %d\n", m, m.brand, power)
+	// }
+	//
+	// type laptop struct {
+	// 	cpu string
+	// }
+	//
+	// func (lap laptop) Draw(power int) {
+	// 	fmt.Printf("%T -> CPU: %s, power: %d\n", lap, lap.cpu, power)
+	// }
+	mobil := mobile{
+		brand: "apple",
+	}
+	lap := laptop{
+		cpu: "Intel i9",
+	}
+	soc := socket{}
+	soc.Plug(mobil, 10)
+	soc.Plug(lap, 50)
+
+	// Note: an interface can help us decouple our types. For example, because we
+	// have the interface, we dont need to update our socket implementation
+	// We can just define a new device type with a Draw method.
+	//
+	// Unlike other languages, Go interfaces are implemented `implicitly`, so we
+	// dont need something like an `implements` keyword.
+	// This mean that a type satisfies an interface automatically when it has
+	// "all the methods" of the interface.
+	//
+	//
+	//
+	//
+	//
+	// Empty Interface
+	// An empty interface can take on a value of any type.
+	// var x interface{}
+	//
+	// why do we need it?
+	// Empty interfaces can be used to handle values of unknown types.
+	//
+	//
+	//
+	//
+	//
+	// Type Assertion
+	// A type assertion provides access to an interface value's underlying concret value.
+	// A type assertion can return two values:
+	// 			The 1st one is the underlying value.
+	// 			2nd a boolean value that reports where the assertion succeeded
+	//
+	// This can help us test whether an interface value holds a specific type or not
+	var ii interface{} = "hello"
+	// or var ii any = "hello"
+
+	str, ok := ii.(string)
+	if ok {
+		fmt.Println(str)
+	} else {
+		fmt.Println("ii is not a string, value ->", ii)
+	}
+	ff, ok := ii.(float64)
+	if ok {
+		fmt.Println(ff)
+	} else {
+		fmt.Println("ii is not a float64, value ->", ii)
+	}
+
+	// if the interface does not hold the type, the statement will trigger a panic
+	// bb := ii.(bool)
+	// fmt.Println(bb)
+	// panic: interface conversion: interface {} is int, not bool
+
+	//
+	//
+	//
+	//
+	// Type Switch
+	// Here, a `switch` statement can be used to determine the type of a variable
+	// of type empty `interface{}`
+	switch ii := ii.(type) {
+	case string:
+		fmt.Printf("String: %s\n", ii)
+	case bool:
+		fmt.Printf("boolean: %v\n", ii)
+	case int:
+		fmt.Printf("Integer: %d\n", ii)
+	default:
+		fmt.Printf("Unexpected: %T\n", ii)
+	}
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Properties
+	// The zero value of an interface is `nil`
+	type MyInterface interface {
+		Method()
+	}
+	var MInt MyInterface
+	fmt.Println(MInt == nil) // nil
+
+	//
+	//
+	// Embedding
+	// We can embed interfaces like structs.
+	type interface1 interface {
+		Method1()
+	}
+	type interface2 interface {
+		Method2()
+	}
+	type interface3 interface {
+		interface1
+		interface2
+	}
+	//
+	// Interface values
+	//
+	// Interface values are comparable
+	// Under the hood, an interface value can be thought of as a tuple consisting
+	// of a value and a concret type.
+	//
+	// With that, we covered interfaces in Go.
+	// It's a really powerful feature, but remember. "Bigger the interface, the
+	// weaker the abstraction" - Rob Pike.
+}
+
+type socket struct{}
+
+type PowerDrawer interface {
+	Draw(power int)
+}
+
+func (socket) Plug(device PowerDrawer, power int) {
+	device.Draw(power)
+}
+
+type mobile struct {
+	brand string
+}
+
+func (m mobile) Draw(power int) {
+	fmt.Printf("%T -> brand: %s, power: %d\n", m, m.brand, power)
+}
+
+type laptop struct {
+	cpu string
+}
+
+func (lap laptop) Draw(power int) {
+	fmt.Printf("%T -> CPU: %s, power: %d\n", lap, lap.cpu, power)
 }
