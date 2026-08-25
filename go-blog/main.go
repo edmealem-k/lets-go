@@ -1150,6 +1150,62 @@ func main() {
 	// to the traditional `try/catch` idiom in other languages. But it is very
 	// powerful as it encourages the developer to actually handle the error
 	// in an explicit way, which improves readablity as well
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Panic and Recovery
+	// While errors are sufficient for most cases, there are some situations
+	// where the program cannot continue
+	// In those cases, we can use the built-in `panif` function
+	//
+	//
+	// Panic
+	// `Panic` is a built-in function that stops the normal execution of the
+	// current `goroutine`. When a function calls `panic`, the normal execution of
+	// the function stops immediately and the control is returned to the caller.
+	// this is repeated until the program exits with the panic msg and stack trace
+	// func panic(interface{})
+	// WillPanic()
+	//
+	//
+	//
+	// Recover
+	// Well, it is possible to regain control of a panicking program using the
+	// built-in `recover` function, along with the `defer` keyword
+	// func recover() interface{}
+	WillPanic()
+	// As you can see, our panic was recovered and now our program can continue
+	// excecution.
+
+	//
+	//
+	// Lastly, I will mention that panic and recover can be considered similar
+	// to the try/catch idiom in other languages.
+
+	//
+	// Use Cases
+	// 1) An unrecoverable error : example reading a config file which is improtant
+	// to start the program.
+	// 2) Developer error : example dereferencing a pointer when the value is nil etc
+}
+
+func handlePanic() {
+	data := recover()
+	fmt.Println("Recovered:", data)
+}
+
+func WillPanic() {
+	defer handlePanic()
+
+	// do something
+
+	panic("Function panic")
 }
 
 var ErrDivideByZero = errors.New("cannot devide by zero")
