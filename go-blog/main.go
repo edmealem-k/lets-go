@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -1025,8 +1026,156 @@ func main() {
 	// With that, we covered interfaces in Go.
 	// It's a really powerful feature, but remember. "Bigger the interface, the
 	// weaker the abstraction" - Rob Pike.
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Errors
+	// In this tutorial, let's talk about error handling.
+	// Notice how I said errors and not exceptions as there is not exception
+	// handling in Go.
+	// Instead, we can just return a built-in `error` type which is an interface type
+	type error interface {
+		Error() string
+	}
+	// constructing an error
+	// There are multiple ways to construct an error
+	//
+	// errors package
+	// the first one is by using the `New` function provided by the errors package
+	// errors.New("Error msg")
+	// 	func Devide(a, b int) (int, error) {
+	// 		if b == 0 {
+	// 			return 0, errors.New("cannot devide by zero")
+	// 		}
+	// 		return a / b, nil
+	// 	}
+	a := 4
+	b := 0
+	result, err := Devide(a, b)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("Deviding %d with %d is %d\n", a, b, result)
+	}
+	// As you can see, we simply check if the error is `nil` and build our logic
+	// accordingly. This is considered quite idiomatic in Go and you will see
+	// this being used a lot.
+	//
+	//
+	// Sentinel Errors
+	// Another important technique in Go is defining expected Errors so they can
+	// be checked explicitly in other parts of the code. These are sometimes referred
+	// to as `sentinel errors`
+	// var ErrDivideByZero = errors.New("cannot devide by zero")
+	//
+	// But what's the point?
+	// so, this becomes useful when we need to execute a d/t branch of code
+	// if certain kind of error is encountered.
+	// we can use `errors.Is` to check explicitly which error occured
+	// func Devide(a, b int) (int, error) {
+	// 	if b == 0 {
+	// 		return 0, ErrDivideByZero
+	// 	}
+	// 	return a / b, nil
+	// }
+	if err != nil {
+		switch {
+		case errors.Is(err, ErrDivideByZero):
+			// Do something with the error
+			fmt.Println("using the errors.Is func:", err)
+		default:
+			fmt.Println("no idea!")
+		}
+	}
+
+	//
+	//
+	// Custom Errors
+	// The above strategy covers most of the error handling use cases. But
+	// sometimes we need additional functionalities such as dynamic values
+	// inside of our errors.
+	//
+	// Earlier, we saw that `error` is just an interface. so basically, anything
+	// can be an `error` as long as it implements the `Error()` method
+	// which returns an error message as a string.
+	//
+	// so, let's define our custom `DivisionError` struct which will contain an error
+	// code and a message
+	//
+	// type DivisionError struct {
+	// 	Code int
+	// 	Msg  string
+	// }
+	//
+	// func (d DivisionError) Error() string {
+	// 	return fmt.Sprintf("Error code: %d, ErrMsg: %s\n", d.Code, d.Msg)
+	// }
+	//
+	// func Devide(a, b int) (int, error) {
+	// 	if b == 0 {
+	// 		return 0, DivisionError{
+	// 			Code: 2000,
+	// 			Msg:  "cannot devide by zero",
+	// 		}
+	// 	}
+	// 	return a / b, nil
+	// }
+
+	//
+	//
+	//
+	// Here, we will use `errors.As` instead of `errors.Is` function to convert
+	// the error to the correct type.
+	if err != nil {
+		var divErr DivisionError
+		switch {
+		case errors.As(err, &divErr):
+			// Do something with the error
+			fmt.Println("Custom errors using the errors.As func:", err)
+		default:
+			fmt.Println("no idea!")
+		}
+	}
+
+	// Lastly, I will say that error handling in Go is quite different compared
+	// to the traditional `try/catch` idiom in other languages. But it is very
+	// powerful as it encourages the developer to actually handle the error
+	// in an explicit way, which improves readablity as well
 }
 
+var ErrDivideByZero = errors.New("cannot devide by zero")
+
+type DivisionError struct {
+	Code int
+	Msg  string
+}
+
+func (d DivisionError) Error() string {
+	return fmt.Sprintf("Error code: %d, ErrMsg: %s\n", d.Code, d.Msg)
+}
+
+func Devide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, DivisionError{
+			Code: 2000,
+			Msg:  "cannot devide by zero",
+		}
+	}
+	return a / b, nil
+}
+
+// ////////////////////////////
+// ////////////////////////////
+// ////////////////////////////
 type socket struct{}
 
 type PowerDrawer interface {
