@@ -1,12 +1,13 @@
 package main
 
 import (
+	"cmp"
 	"errors"
 	"fmt"
 
-	"github.com/rs/zerolog/log"
-
 	"example/custom"
+
+	"github.com/rs/zerolog/log"
 )
 
 type Car struct {
@@ -1193,8 +1194,121 @@ func main() {
 	// 1) An unrecoverable error : example reading a config file which is improtant
 	// to start the program.
 	// 2) Developer error : example dereferencing a pointer when the value is nil etc
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// Generics
+	// Generics means parameterized types. Put simply, generics allow programmers to
+	// write code where the type can be specified later because the type
+	// isn't immediately relevant.
+	// generic function
+	// func fnName[T constraint]() {
+	// 	...
+	// }
+	//
+	// When to use generics
+	// we can take the following use cases as an example:
+	// 			Functions that operate on arrays, slices, maps, and channels
+	// 			General purpose data structures like stack or linked list
+	// 			To reduce code duplication
+
+	// Generics on function
+
+	resultsFloat := MapValues(
+		[]float64{1.1, 2.1, 3.1},
+		func(n float64) float64 {
+			return n * 2
+		})
+	fmt.Println("Generics:resultsFloat", resultsFloat)
+
+	resultsInt := MapValues(
+		[]int{1, 2, 3},
+		func(n int) int {
+			return n * 2
+		})
+	fmt.Println("Generics:resultsInt", resultsInt)
+
+	// Generics on Structs
+
+	u := UserGen[string]{
+		ID:   1,
+		Name: "Edm",
+		Data: "hello",
+	}
+	fmt.Println(u)
+
+	u1 := UserGen[int]{
+		ID:   0,
+		Name: "EDM",
+		Data: 0,
+	}
+	fmt.Println(u1)
+
+	// Generics on Maps
+	mm := make(CustomMap[int, string])
+	mm[2] = "two"
+	mm[3] = "three"
+	fmt.Println(mm)
+
+	mmm := make(CustomMap[string, int])
+	mmm["two"] = 2
+	mmm["three"] = 3
+	fmt.Println(mmm)
 }
 
+// Generics on Maps
+//
+// type CustomMap map[string]int // what if we wanted the key to be more that just string
+// type CustomMap map[interface{}]int // not recommended
+
+type CustomMap[T comparable, V int | string] map[T]V
+
+// on interview: what are the valid data types for a key of a map
+// answer: comparable -> any type which is comparable,  a(int) == b(int), a(string) == b(string)
+
+// Generics on Structs
+
+type CustomData interface {
+	cmp.Ordered
+}
+
+type UserGen[T CustomData] struct {
+	ID   int
+	Name string
+	Data T
+}
+
+// Generics on function
+// map filter and reduce
+// input: [1, 2, 3], (n) => n * 2
+// output: [2, 4, 6]
+
+func MapValues[T cmp.Ordered](values []T, MapFn func(T) T) []T {
+	var NewValues []T
+
+	for _, val := range values {
+		newVal := MapFn(val)
+		NewValues = append(NewValues, newVal)
+	}
+
+	return NewValues
+}
+
+// ///////////////////////////////
+// ///////////////////////////////
+// ///////////////////////////////
+// ///////////////////////////////
 func handlePanic() {
 	data := recover()
 	fmt.Println("Recovered:", data)
