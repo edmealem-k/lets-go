@@ -1239,6 +1239,12 @@ func main() {
 		})
 	fmt.Println("Generics:resultsInt", resultsInt)
 
+	resultsFilterInt := FilterValues([]int{-1, 2, 4, -5, 3, 1})
+	fmt.Println("Filter +ve Values", resultsFilterInt)
+
+	resultsFilterFloat := FilterValues([]float64{-1.1, 2.2, 4.2, -5.2, 3.0, 1.0})
+	fmt.Println("Filter +ve Values", resultsFilterFloat)
+
 	// Generics on Structs
 
 	u := UserGen[string]{
@@ -1269,7 +1275,7 @@ func main() {
 
 // Generics on Maps
 //
-// type CustomMap map[string]int // what if we wanted the key to be more that just string
+// type CustomMap map[string]int // if we wanted the key to be more that just string we will need generics
 // type CustomMap map[interface{}]int // not recommended
 
 type CustomMap[T comparable, V int | string] map[T]V
@@ -1303,6 +1309,19 @@ func MapValues[T cmp.Ordered](values []T, MapFn func(T) T) []T {
 	}
 
 	return NewValues
+}
+
+func FilterValues[T float64 | int](values []T) []T {
+	// a filter that return +ve numbers
+	var newVals []T
+
+	for _, val := range values {
+		if val > 0 {
+			newVals = append(newVals, val)
+		}
+	}
+
+	return newVals
 }
 
 // ///////////////////////////////
